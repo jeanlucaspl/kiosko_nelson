@@ -1,13 +1,13 @@
 [
-    {"id":1,"nombre":"Cerveza Quilmes Lata 473ml","marca":"Quilmes","precio":1900,"unidad":"lata","categoria":"Alcohol","imagen":"/productos/1.webp"},
-    {"id":2,"nombre":"Fernet Branca 750ml","marca":"Branca","precio":9400,"unidad":"botella","categoria":"Alcohol","imagen":"/productos/2.webp"},
-    {"id":3,"nombre":"Marlboro Box","marca":"Marlboro","precio":5900,"unidad":"atado","categoria":"Cigarrillos","imagen":"/productos/3.webp"},
-    {"id":4,"nombre":"Coca-Cola 1.5L","marca":"Coca-Cola","precio":2800,"unidad":"botella","categoria":"Bebidas","imagen":"/productos/4.webp"},
-    {"id":5,"nombre":"Agua Villavicencio 2L","marca":"Villavicencio","precio":2100,"unidad":"botella","categoria":"Bebidas","imagen":"/productos/5.webp"},
-    {"id":6,"nombre":"Empanada","marca":"Casera","precio":1500,"unidad":"unidad","categoria":"Comida","imagen":"/productos/6.webp"},
-    {"id":7,"nombre":"Papas Lays 330g","marca":"Lays","precio":2300,"unidad":"paquete","categoria":"Snacks","imagen":"/productos/7.webp"},
-    {"id":8,"nombre":"Alfajor Milka Triple","marca":"Milka","precio":2400,"unidad":"tableta","categoria":"Dulces","imagen":"/productos/8.webp"},
-    {"id":9,"nombre":"Cable USB-C 1m","marca":"Genérico","precio":3200,"unidad":"unidad","categoria":"Accesorios","imagen":"/productos/9.webp"},
-    {"id":10,"nombre":"Combo Gaseosa + Pancho","marca":"Promo","precio":3500,"unidad":"combo","categoria":"Ofertas","imagen":"/productos/10.webp"},
-    {"id":11,"nombre":"Fideos Spaguetti 500g","marca":"Sol Pampeano","precio":900,"unidad":"paquete","categoria":"Almacen","imagen":"/productos/11.webp"}
+    {"id":1,"nombre":"Cerveza Quilmes Lata 473ml","marca":"Quilmes","precio":1900,"unidad":"lata","categoria":"Alcohol","imagen":"productos/1.webp"},
+    {"id":2,"nombre":"Fernet Branca 750ml","marca":"Branca","precio":9400,"unidad":"botella","categoria":"Alcohol","imagen":"productos/2.webp"},
+    {"id":3,"nombre":"Marlboro Box","marca":"Marlboro","precio":5900,"unidad":"atado","categoria":"Cigarrillos","imagen":"productos/3.webp"},
+    {"id":4,"nombre":"Coca-Cola 1.5L","marca":"Coca-Cola","precio":2800,"unidad":"botella","categoria":"Bebidas","imagen":"productos/4.webp"},
+    {"id":5,"nombre":"Agua Villavicencio 2L","marca":"Villavicencio","precio":2100,"unidad":"botella","categoria":"Bebidas","imagen":"productos/5.webp"},
+    {"id":6,"nombre":"Empanada","marca":"Casera","precio":1500,"unidad":"unidad","categoria":"Comida","imagen":"productos/6.webp"},
+    {"id":7,"nombre":"Papas Lays 330g","marca":"Lays","precio":2300,"unidad":"paquete","categoria":"Snacks","imagen":"productos/7.webp"},
+    {"id":8,"nombre":"Alfajor Milka Triple","marca":"Milka","precio":2400,"unidad":"tableta","categoria":"Dulces","imagen":"productos/8.webp"},
+    {"id":9,"nombre":"Cable USB-C 1m","marca":"Genérico","precio":3200,"unidad":"unidad","categoria":"Accesorios","imagen":"productos/9.webp"},
+    {"id":10,"nombre":"Combo Gaseosa + Pancho","marca":"Promo","precio":3500,"unidad":"combo","categoria":"Ofertas","imagen":"productos/10.webp"},
+    {"id":11,"nombre":"Fideos Spaguetti 500g","marca":"Sol Pampeano","precio":900,"unidad":"paquete","categoria":"Almacen","imagen":"productos/11.webp"}
   ]
