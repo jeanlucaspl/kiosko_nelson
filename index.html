@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Kiosco Nelson</title>
+<title>Kiosco – Catálogo</title>
 
-<!-- Preload del logo del splash (ajusta el nombre si cambiás LOGO_SRC) -->
+<!-- Preload del logo del splash (ajusta si cambias LOGO_SRC) -->
 <link rel="preload" as="image" href="logo.png">
 
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -26,17 +26,17 @@
     --header-col-offers: 12%;
     --header-col-cart: 12%;
     --logo-header-maxh: calc(var(--header-h) * 0.8);
-    --search-h:          calc(var(--header-h) * 0.4);
-    --icon-btn-size:     calc(var(--header-h) * 0.4);
+    --search-h:          calc(var(--header-h) * 0.5);
+    --icon-btn-size:     calc(var(--header-h) * 0.5);
     --icon-font:         clamp(10px, calc(var(--header-h)*0.16), 12px);
 
     /* Otros */
     --logo-splash-vmin: 50vmin;
-    --cart-drawer-w: 30vw;   /* desktop */
+    --cart-drawer-w: 25vw;   /* desktop */
     --wa-size-desktop: 12vmin;
     --wa-size-mobile:  16vmin;
-    --zoom-press: 1.06;
-    --zoom-hover: 1.05;
+    --zoom-press: 1.08;
+    --zoom-hover: 1.5;
     --grid-safe-pad: 24px;
   }
 
@@ -49,28 +49,21 @@
   }
   a{color:inherit; text-decoration:none}
 
-  /* ================= SPLASH mejorado ================= */
+  /* ============ SPLASH ============ */
   #splash{
     position:fixed; inset:0; display:flex; flex-direction:column; gap:18px;
     align-items:center; justify-content:center; background:var(--green-900);
     z-index:9999; padding:24px; opacity:1; visibility:visible;
-    transition: opacity .35s ease, visibility .35s ease;
-    will-change: opacity;
+    transition: opacity .35s ease, visibility .35s ease; will-change: opacity;
   }
   #splash.is-hidden{ opacity:0; visibility:hidden; }
   #splash img{
-    width:min(80vw, var(--logo-splash-vmin));
-    max-width:600px;
-    height:auto;
-    max-height:40vh;
-    object-fit:contain;
-    filter:drop-shadow(0 8px 24px rgba(0,0,0,.35));
+    width:min(80vw, var(--logo-splash-vmin)); max-width:600px; height:auto; max-height:40vh;
+    object-fit:contain; filter:drop-shadow(0 8px 24px rgba(0,0,0,.35));
   }
   .loader{position:relative; width:min(340px,72vw); height:6px; border-radius:999px; background:rgba(255,255,255,.12); overflow:hidden}
-  .loader::after{
-    content:""; position:absolute; inset:0; transform:scaleX(0); transform-origin:left;
-    background:linear-gradient(90deg, var(--lime-300), #25D366); animation:fill 2.4s ease forwards
-  }
+  .loader::after{content:""; position:absolute; inset:0; transform:scaleX(0); transform-origin:left;
+    background:linear-gradient(90deg, var(--lime-300), #25D366); animation:fill 2.4s ease forwards}
   @keyframes fill{to{transform:scaleX(1)}}
 
   /* Header */
@@ -105,7 +98,7 @@
 
   .badge{position:absolute; top:-6px; right:-6px; background:var(--lime-300); color:#103426; min-width:20px; height:20px; border-radius:999px; font-weight:800; font-size:12px; display:flex; align-items:center; justify-content:center; padding:0 6px; box-shadow: var(--shadow-base)}
 
-  /* ===== Móviles (≤ 680px): ocultar logo y header en 2 filas ===== */
+  /* ===== Móviles (≤ 680px) ===== */
   @media (max-width: 680px){
     .wrap.headerBar{ max-width:none; width:100%; padding:10px 12px; height:auto; }
     .logoWrap{ display:none; }
@@ -114,14 +107,12 @@
       grid-template-areas:
         "search search"
         "offers cart";
-      row-gap: 8px;
-      justify-items: center;
+      row-gap: 8px; justify-items: center;
     }
-    .search{width:100%; height: calc(var(--header-h) * 0.4); margin:0;}
-    .iconBlock{align-items:center; justify-content:center;}
+    .search{width:100%; height: calc(var(--header-h) * 0.3); margin:0;}
     .iconBtn{width: calc(var(--header-h) * 0.55); height: calc(var(--header-h) * 0.4)}
     .iconLabel{font-size: clamp(10px, calc(var(--header-h)*0.20), 12px)}
-    :root{ --cart-drawer-w: 80vw; }
+    :root{ --cart-drawer-w: 80vw; } /* carrito más ancho en móvil */
   }
 
   /* View & pages */
@@ -132,15 +123,11 @@
 
   /* Home grid */
   main.wrap{background:transparent;}
-  .homeGrid{
-    display:grid; grid-template-columns: repeat(3, 1fr); gap:16px;
-    padding: var(--grid-safe-pad); overflow:visible;
-  }
+  .homeGrid{display:grid; grid-template-columns: repeat(3, 1fr); gap:16px; padding: var(--grid-safe-pad); overflow:visible}
   .tile{
     position:relative; background:var(--card); border:1px solid rgba(255,255,255,.12);
-    border-radius:20px; height:30vmin; overflow:visible;
-    color:var(--text-on-green); display:flex; align-items:flex-end;
-    transition:transform .15s ease, border-color .15s ease, box-shadow .15s ease, z-index .15s ease;
+    border-radius:20px; height:30vmin; overflow:visible; color:var(--text-on-green);
+    display:flex; align-items:flex-end; transition:transform .15s ease, border-color .15s ease, box-shadow .15s ease, z-index .15s ease;
     box-shadow:var(--shadow-base); will-change:transform;
   }
   .tile:hover{transform:translateY(-2px) scale(var(--zoom-hover)); border-color:var(--lime-300); z-index:5}
@@ -178,8 +165,7 @@
     touch-action: pan-y; /* scroll vertical permitido; horizontal lo manejamos según zona */
   }
   .drawer.open{transform:translateX(0)}
-  .drawer > header,
-  .cartTotal{ touch-action: none; } /* capturamos gestos horizontales cómodamente */
+  .drawer > header, .cartTotal{ touch-action: none; } /* capturamos gestos horizontales cómodamente */
 
   .drawer header{display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid rgba(255,255,255,.12); background:transparent; box-shadow:none}
   .drawer header h3{margin:0; font-size: clamp(18px, 3vmin, 22px); color:#e8ff84}
@@ -194,13 +180,12 @@
   .priceCol{display:flex; flex-direction:column; align-items:flex-end; gap:6px}
   .btnGhost{width:28px; height:28px; border-radius:10px; border:1px solid rgba(255,255,255,.14); background:transparent; color:var(--muted); font-weight:800; cursor:pointer}
   .cartTotal{
-    position:sticky; bottom:0;
-    background:rgba(0,0,0,.08);
+    position:sticky; bottom:0; background:rgba(0,0,0,.08);
     padding:12px 16px max(12px, env(safe-area-inset-bottom));
     border-top:1px solid rgba(255,255,255,.12);
   }
   .cartFooter{display:flex; gap:10px; margin-top:8px; flex-wrap:nowrap}
-  /* Estilo clásico del botón WA (verde) */
+  /* Botón WA (verde) */
   .btnWA{
     display:inline-flex; align-items:center; justify-content:center;
     padding:12px; border-radius:12px; border:0; cursor:pointer;
@@ -218,29 +203,19 @@
   .toast{position:fixed; left:50%; bottom:26px; transform:translateX(-50%) translateY(20px); background:rgba(0,0,0,.8); color:#fff; padding:12px 16px; border-radius:12px; font-weight:700; opacity:0; transition:opacity .2s ease, transform .2s ease; z-index:50; pointer-events:none}
   .toast.show{opacity:1; transform:translateX(-50%) translateY(0)}
 
-  /* WhatsApp FAB con zoom + tooltip */
-  .wa-fab-img{
-    position:fixed; right:16px; bottom:16px; display:block; z-index:60;
-    transition: transform .12s ease;
-  }
+  /* WhatsApp FAB */
+  .wa-fab-img{position:fixed; right:16px; bottom:16px; display:block; z-index:60; transition: transform .12s ease;}
   .wa-fab-img.hidden{display:none !important}
   .wa-fab-img img{width:var(--wa-size-desktop); height:auto}
   .wa-fab-img::after{
-    content:"Contactenos";
-    position:absolute; right: calc(100% + 10px); bottom: 8px;
+    content:"Contactenos"; position:absolute; right: calc(100% + 10px); bottom: 8px;
     background: rgba(0,0,0,.8); color: #fff; font-weight:700; font-size: 13px;
     padding: 8px 10px; border-radius: 10px; white-space: nowrap;
     opacity:0; transform: translateY(6px); pointer-events:none;
     transition: opacity .15s ease, transform .15s ease;
   }
-  .wa-fab-img:hover::after,
-  .wa-fab-img:focus-visible::after,
-  .wa-fab-img.is-pressing::after{
-    opacity:1; transform: translateY(0);
-  }
-  @media (max-width: 680px){
-    .wa-fab-img img{ width: var(--wa-size-mobile); }
-  }
+  .wa-fab-img:hover::after, .wa-fab-img:focus-visible::after, .wa-fab-img.is-pressing::after{ opacity:1; transform: translateY(0); }
+  @media (max-width: 680px){ .wa-fab-img img{ width: var(--wa-size-mobile); } }
 
   /* Sugerencias */
   .suggest{position: fixed; left: 0; top: 0; width: 0; background: var(--card); border:1px solid rgba(255,255,255,.16); border-radius:12px; box-shadow: var(--shadow-base); max-height: 70vh; overflow:auto; z-index: 1000;}
@@ -262,12 +237,10 @@
   <header>
     <div class="wrap headerBar">
       <div class="logoWrap pressable" id="logoHome"><img id="headerLogo" alt="Logo" /></div>
-
       <label class="search" aria-label="Buscar productos">
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true"><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.6"/></svg>
         <input id="q" placeholder="Buscar… (Enter)" autocomplete="off" />
       </label>
-
       <div class="iconBlock offers">
         <button id="offerBtn" class="iconBtn pressable" aria-label="Ofertas">
           <img id="offerIcon" alt="Ofertas" />
@@ -275,7 +248,6 @@
         </button>
         <div class="iconLabel">Ofertas</div>
       </div>
-
       <div class="iconBlock cart">
         <button id="cartBtn" class="iconBtn pressable" aria-label="Carrito">
           <img id="cartIcon" alt="Carrito" />
@@ -317,7 +289,7 @@
   <!-- Toast -->
   <div id="toast" class="toast" role="status" aria-live="polite">Agregado al carrito</div>
 
-  <!-- WhatsApp FAB con zoom + tooltip -->
+  <!-- WhatsApp FAB -->
   <a id="waFabImg" class="wa-fab-img pressable" target="_blank" rel="noopener" aria-label="WhatsApp">
     <img id="waIcon" alt="WhatsApp" />
   </a>
@@ -334,7 +306,7 @@ const CART_ICON_SRC     = 'cart_icon.png';
 const OFFER_ICON_SRC    = 'offer_icon.png';
 
 const TILE_BG = {
-  alcohol_cigarros: 'img/alcohol_cigarros.png',
+  alcohol_cigarros: 'img/alcohol_cigarros.jpeg',
   almacen:         'img/almacen.webp',
   bebidas:         'img/bebidas.jpg',
   comida:          'img/comida.jpg',
@@ -366,7 +338,7 @@ const FALLBACK = [
 async function getCatalog(){
   if (CATALOG) return CATALOG;
   try{
-    const r = await fetch('productos.json?v=3',{cache:'no-store'});
+    const r = await fetch('productos.json?v=4',{cache:'no-store'});
     if(!r.ok) throw 0;
     const data = await r.json();
     if(!Array.isArray(data)) throw 0;
@@ -424,6 +396,18 @@ function scrollToTopHard(){
   sc.scrollTop=0; requestAnimationFrame(()=>sc.scrollTop=0); setTimeout(()=>sc.scrollTop=0,50);
 }
 
+/* ======= Historia (Atrás/Adelante) ======= */
+function pushStateSafe(state){ try{ history.pushState(state, ""); }catch{} }
+function replaceHomeState(){ try{ history.replaceState({home:true}, ""); }catch{} }
+window.addEventListener('popstate', ()=>{
+  // Si el carrito está abierto → cerrarlo
+  if (drawerOpen()){ closeCartDrawer(true); return; }
+  // Si no estoy en home → volver a home
+  if (!topIsHome()){ goHome(); return; }
+  // Si ya estoy en home, dejamos que el navegador siga su curso (salir del sitio, etc.)
+});
+
+/* Navegación programática de páginas */
 function pushPage(el){
   const stack = Array.from(view.querySelectorAll('.page'));
   const top = stack.at(-1);
@@ -437,6 +421,9 @@ function pushPage(el){
   requestAnimationFrame(()=> el.classList.add('active'));
   attachSwipeBack(el);
   updateFabVisibility();
+
+  // Estado de historial: entrar a una subpágina
+  pushStateSafe({page:true});
 }
 function popTop(){
   const pages = Array.from(view.querySelectorAll('.page'));
@@ -452,13 +439,27 @@ function goHome(){
   updateFabVisibility();
 }
 
-/* Swipe back en páginas de catálogo (derecha ←) */
+/* Swipe back en páginas (evita interferir con botones/enlaces/inputs) */
 function attachSwipeBack(page){
   let sx=0, sy=0, tracking=false, dragging=false, pid=null;
-  const onDown = (e)=>{ tracking=true; dragging=false; sx=e.clientX; sy=e.clientY; pid=e.pointerId; page.setPointerCapture?.(pid); page.style.willChange='transform'; };
-  const onMove = (e)=>{ if(!tracking) return; const dx=e.clientX-sx, dy=Math.abs(e.clientY-sy); if(dx>0 && dy<80){ dragging=true; page.style.transition='none'; page.style.transform=`translateX(${dx}px)`; e.preventDefault?.(); } };
+
+  function isInteractiveStart(e){
+    return !!e.target.closest('button, a, input, select, textarea, .btnPrimary, .btnIcon, .backBtn, label');
+  }
+
+  const onDown = (e)=>{
+    if(isInteractiveStart(e)) return;           // << no intercepta clics en controles
+    tracking=true; dragging=false; sx=e.clientX; sy=e.clientY;
+    pid=e.pointerId; page.setPointerCapture?.(pid); page.style.willChange='transform';
+  };
+  const onMove = (e)=>{
+    if(!tracking) return;
+    const dx=e.clientX-sx, dy=Math.abs(e.clientY-sy);
+    if(dx>0 && dy<80){ dragging=true; page.style.transition='none'; page.style.transform=`translateX(${dx}px)`; e.preventDefault?.(); }
+  };
   const onUp = (e)=>{
-    if(!tracking) return; tracking=false; const dx=e.clientX-sx, dy=Math.abs(e.clientY-sy);
+    if(!tracking) return; tracking=false;
+    const dx=e.clientX-sx, dy=Math.abs(e.clientY-sy);
     page.releasePointerCapture?.(pid); page.style.transition='';
     if(dragging && dx>100 && dy<80){
       setScrollTop(homeScrollY);
@@ -488,11 +489,13 @@ async function openCategoryGroup(label, slug, cats){
   if(list.length===0){ grid.innerHTML = `<div style="grid-column:1/-1;opacity:.8">Sin productos.</div>`; return; }
   list.forEach(p=> grid.appendChild(productCard(p)));
 }
+
 offerBtn.addEventListener('click', ()=>{
   const top = Array.from(view.querySelectorAll('.page')).at(-1);
-  if(top && top.id==='cat-ofertas'){ popTop(); return; }
+  if(top && top.id==='cat-ofertas'){ history.back(); return; } // volver con atrás
   openOffers();
 });
+
 async function openOffers(){
   const list = (await getCatalog()).filter(p=> p.categoria==='Ofertas');
   const page = document.createElement('div');
@@ -505,6 +508,7 @@ async function openOffers(){
   if(list.length===0){ grid.innerHTML = `<div style="grid-column:1/-1;opacity:.8">Sin ofertas por ahora.</div>`; return; }
   list.forEach(p=> grid.appendChild(productCard(p)));
 }
+
 async function updateOfferBadge(){ const count = (await getCatalog()).filter(p=> p.categoria==='Ofertas').length; offerBadge.textContent = count; offerBadge.style.display = count>0 ? 'inline-flex' : 'none'; }
 
 /* Logo → inicio */
@@ -522,7 +526,14 @@ function productCard(p){
   card.innerHTML = `
     <div class="ph">${imgTag}</div>
     <div class="info"><div class="title">${p.nombre}</div><div class="meta"><span>${p.marca}</span><span class="price">$ ${precio}</span></div></div>
-    <div class="qtyRow"><div class="qtyCtrl"><button class="btnIcon pressable" data-act="minus">−</button><strong class="qty" aria-live="polite">1</strong><button class="btnIcon pressable" data-act="plus">+</button></div><button class="btnPrimary pressable" data-act="add">Agregar</button></div>
+    <div class="qtyRow">
+      <div class="qtyCtrl">
+        <button class="btnIcon pressable" data-act="minus">−</button>
+        <strong class="qty" aria-live="polite">1</strong>
+        <button class="btnIcon pressable" data-act="plus">+</button>
+      </div>
+      <button class="btnPrimary pressable" data-act="add">Agregar</button>
+    </div>
   `;
   card.querySelectorAll('.pressable').forEach(makePressable);
 
@@ -546,18 +557,24 @@ const btnClear = document.getElementById('btnClear');
 const toast    = document.getElementById('toast');
 
 function openCartDrawer(){
+  if(drawerOpen()) return;
   overlay.classList.add('show');
   drawer.classList.add('open');
   updateFabVisibility();
+  pushStateSafe({drawer:true}); // estado para “atrás” cierre carrito
 }
-function closeCartDrawer(){
+function closeCartDrawer(byPop=false){
   overlay.classList.remove('show');
   drawer.classList.remove('open');
   drawer.style.transform = '';
   updateFabVisibility();
+  // Si cierra por UI (no por popstate), retroceder 1 en historial para mantener coherencia
+  if(!byPop){
+    try{ history.back(); }catch{}
+  }
 }
-overlay.addEventListener('click', closeCartDrawer);
-cartClose.addEventListener('click', closeCartDrawer);
+overlay.addEventListener('click', ()=> closeCartDrawer(false));
+cartClose.addEventListener('click', ()=> closeCartDrawer(false));
 cartBtn.addEventListener('click', openCartDrawer);
 btnClear.addEventListener('click', ()=>{ cart.clear(); renderCart(); });
 
@@ -651,20 +668,24 @@ btnWA.addEventListener('click',()=>{
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`,'_blank');
 });
 
-/* ===== Cierre del carrito por arrastre (izq → der) con zonas seguras ===== */
+/* ===== Cierre del carrito por arrastre (zonas seguras) ===== */
 function enableCartSwipeClose(){
   let startX=0, startY=0, dragging=false, pid=null;
 
   function canStartDrawerSwipe(e){
     if(!drawer.classList.contains('open')) return false;
-    // Sin items: desde cualquier lado
+    // Si no hay items: cualquier zona del drawer
     if(cart.size === 0) return true;
 
     const t = e.target;
-    // No iniciar si es un item (ese gesto es para borrar)
+
+    // Evitar interferir con controles de click:
+    if (t.closest('#cartClose, #btnWA, #btnClear, button, a')) return false;
+
+    // No iniciar si el gesto empieza sobre un .cartItem (ese es para borrar)
     if (t.closest('.cartItem')) return false;
 
-    // Permitir en header, total o huecos de la lista
+    // Zonas válidas: header, total, huecos de la lista, o cualquier otra parte libre
     if (t.closest('.drawer > header')) return true;
     if (t.closest('.cartTotal')) return true;
     if (t.closest('.cartList')) return true;
@@ -706,7 +727,7 @@ function enableCartSwipeClose(){
     const dx = e.clientX - startX;
     const dy = Math.abs(e.clientY - startY);
     if (dx > 100 && dy < 80){
-      closeCartDrawer();
+      closeCartDrawer(true); // cerramos sin hacer history.back() otra vez
       overlay.style.opacity = '';
     }else{
       drawer.style.transform = '';
@@ -726,13 +747,13 @@ const suggest  = document.getElementById('suggest');
 let suggestItems = []; let suggestIndex = -1; let SUGGEST_POOL = null;
 
 const CATEGORY_ALIASES = [
-  {cats:['Alcohol'],      terms:['alcohol','alcoh']},
-  {cats:['Cigarrillos'],  terms:['cigarrillos','cigarros','cigarr']},
-  {cats:['Bebidas'],      terms:['bebidas','bebid']},
-  {cats:['Comida'],       terms:['comida','comid']},
-  {cats:['Almacen'],      terms:['almacen','almacén']},
-  {cats:['Snacks'],       terms:['snacks','snack']},
-  {cats:['Dulces'],       terms:['dulces','dulce']},
+  {cats:['Alcohol'],      terms:['alcohol','alcoh','alc']},
+  {cats:['Cigarrillos'],  terms:['cigarrillos','cigarros','cigarr','cig']},
+  {cats:['Bebidas'],      terms:['bebidas','bebid','beb']},
+  {cats:['Comida'],       terms:['comida','comid','comi']},
+  {cats:['Almacen'],      terms:['almacen','almacén','alm']},
+  {cats:['Snacks'],       terms:['snacks','snack','sna']},
+  {cats:['Dulces'],       terms:['dulces','dulce','dulc']},
   {cats:['Snacks','Dulces'], terms:['snacks y dulces','snacks dulces','snacks y','dulces y']},
   {cats:['Alcohol','Cigarrillos'], terms:['alcohol y cigarr','alcohol y cigarros','alcohol y cigarrillos']}
 ];
@@ -804,9 +825,7 @@ inputQ.addEventListener('input', async ()=>{
   );
   const startsSet = new Set(starts.map(x=>x.id));
   const contains = SUGGEST_POOL.filter(x =>
-    !startsSet.has(x.id) && (
-      x.texto.toLowerCase().includes(q) || (x.marca||'').toLowerCase().includes(q)
-    )
+    !startsSet.has(x.id) && (x.texto.toLowerCase().includes(q) || (x.marca||'').toLowerCase().includes(q))
   );
 
   const seen = new Set();
@@ -865,7 +884,7 @@ function makePressable(el){
   el.addEventListener('pointerleave', clear, {passive:true});
 }
 
-/* ================= SPLASH controller ================= */
+/* ============== SPLASH controller ============== */
 function wait(ms){ return new Promise(r=>setTimeout(r, ms)); }
 async function runSplash(){
   const MIN_MS = 2800; // ajustá a gusto
@@ -895,6 +914,7 @@ async function runSplash(){
 
 /* Boot */
 (function boot(){
+  replaceHomeState();      // estado base: home
   getCatalog();
   updateOfferBadge();
   updateFabVisibility();
