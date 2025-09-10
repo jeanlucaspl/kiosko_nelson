@@ -49,7 +49,7 @@
   #splash{position:fixed; inset:0; display:flex; flex-direction:column; gap:18px; align-items:center; justify-content:center; background:var(--green-900); z-index:9999; padding:24px; animation:splashHide 3s ease forwards}
   #splash img{width:var(--logo-splash-vmin); height:auto; filter:drop-shadow(0 8px 24px rgba(0,0,0,.35))}
   .loader{position:relative; width:min(320px,70vw); height:6px; border-radius:999px; background:rgba(255,255,255,.12); overflow:hidden}
-  .loader::after{content:""; position:absolute; inset:0; transform:scaleX(0); transform-origin:left; background:linear-gradient(90deg, var(--lime-300), #25D366); animation:fill 1.5s linear forwards}
+  .loader::after{content:""; position:absolute; inset:0; transform:scaleX(0); transform-origin:left; background:linear-gradient(90deg, var(--lime-300), #25D366); animation:fill 2s linear forwards}
   @keyframes fill{to{transform:scaleX(1)}}
   @keyframes splashHide{0%{opacity:1;visibility:visible}90%{opacity:1}100%{opacity:0;visibility:hidden}}
 
@@ -112,7 +112,7 @@
     .iconLabel{font-size: clamp(10px, calc(var(--header-h)*0.20), 12px)}
 
     /* Carrito más ancho en móvil */
-    :root{ --cart-drawer-w: 70vw; }
+    :root{ --cart-drawer-w: 80vw; }
   }
 
   /* View & pages */
