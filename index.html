@@ -686,7 +686,7 @@ function enableCartSwipeClose(){
     if (t.closest('.cartItem')) return false;
 
     // Zonas válidas: header, total, huecos de la lista, o cualquier otra parte libre
-    if (t.closest('.drawer > header')) return true;
+    if (t.closest('.drawer > header')) return false;
     if (t.closest('.cartTotal')) return true;
     if (t.closest('.cartList')) return true;
 
