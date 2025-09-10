@@ -4,6 +4,10 @@
 <meta charset="utf-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1" />
 <title>Kiosco – Catálogo</title>
+
+<!-- Preload del logo del splash (ajusta el nombre si cambiás LOGO_SRC) -->
+<link rel="preload" as="image" href="logo.png">
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=League+Spartan:wght@400;700;800&display=swap" rel="stylesheet">
@@ -22,12 +26,12 @@
     --header-col-offers: 12%;
     --header-col-cart: 12%;
     --logo-header-maxh: calc(var(--header-h) * 0.8);
-    --search-h:          calc(var(--header-h) * 0.5);
+    --search-h:          calc(var(--header-h) * 0.4);
     --icon-btn-size:     calc(var(--header-h) * 0.4);
     --icon-font:         clamp(10px, calc(var(--header-h)*0.16), 12px);
 
     /* Otros */
-    --logo-splash-vmin: 35vmin;
+    --logo-splash-vmin: 45vmin;
     --cart-drawer-w: 30vw;   /* desktop */
     --wa-size-desktop: 12vmin;
     --wa-size-mobile:  16vmin;
@@ -171,9 +175,12 @@
     position:fixed; top:0; right:0; width:var(--cart-drawer-w);
     height:100dvh; background:var(--green-800); box-shadow:-8px 0 24px rgba(0,0,0,.45);
     transform:translateX(100%); transition:transform .28s ease; z-index:41; display:flex; flex-direction:column;
-    touch-action: pan-y; /* permití scroll vertical, nosotros manejamos horizontal */
+    touch-action: pan-y; /* scroll vertical permitido; horizontal lo manejamos según zona */
   }
   .drawer.open{transform:translateX(0)}
+  .drawer > header,
+  .cartTotal{ touch-action: none; } /* capturamos gestos horizontales cómodamente */
+
   .drawer header{display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid rgba(255,255,255,.12); background:transparent; box-shadow:none}
   .drawer header h3{margin:0; font-size: clamp(18px, 3vmin, 22px); color:#e8ff84}
   .cartList{flex:1; min-height:0; overflow:auto; padding:12px}
@@ -246,7 +253,7 @@
 <body>
   <!-- Splash -->
   <div id="splash" aria-hidden="true">
-    <img id="splashLogo" alt="Kiosco" />
+    <img id="splashLogo" alt="Kiosco" decoding="async" fetchpriority="high" />
     <div class="loader" aria-hidden="true"></div>
   </div>
   <noscript><style>#splash{display:none !important}</style></noscript>
@@ -644,12 +651,29 @@ btnWA.addEventListener('click',()=>{
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`,'_blank');
 });
 
-/* ===== Cierre del carrito por arrastre (izq → der) ===== */
+/* ===== Cierre del carrito por arrastre (izq → der) con zonas seguras ===== */
 function enableCartSwipeClose(){
   let startX=0, startY=0, dragging=false, pid=null;
 
+  function canStartDrawerSwipe(e){
+    if(!drawer.classList.contains('open')) return false;
+    // Sin items: desde cualquier lado
+    if(cart.size === 0) return true;
+
+    const t = e.target;
+    // No iniciar si es un item (ese gesto es para borrar)
+    if (t.closest('.cartItem')) return false;
+
+    // Permitir en header, total o huecos de la lista
+    if (t.closest('.drawer > header')) return true;
+    if (t.closest('.cartTotal')) return true;
+    if (t.closest('.cartList')) return true;
+
+    return true;
+  }
+
   const onDown = (e)=>{
-    if(!drawer.classList.contains('open')) return;
+    if(!canStartDrawerSwipe(e)) return;
     dragging = true;
     startX = e.clientX;
     startY = e.clientY;
@@ -663,13 +687,12 @@ function enableCartSwipeClose(){
     if(!dragging) return;
     const dx = e.clientX - startX;
     const dy = Math.abs(e.clientY - startY);
-    // arrastre a la derecha, gesto predominantemente horizontal
     if (dx > 0 && dy < 80){
       drawer.style.transform = `translateX(${dx}px)`;
       const max = Math.min(window.innerWidth * 0.6, 400);
       const alpha = Math.max(0, 1 - dx / max);
       overlay.style.opacity = String(alpha);
-      e.preventDefault?.(); // evita scroll durante el gesto
+      e.preventDefault?.();
     }
   };
 
@@ -845,25 +868,27 @@ function makePressable(el){
 /* ================= SPLASH controller ================= */
 function wait(ms){ return new Promise(r=>setTimeout(r, ms)); }
 async function runSplash(){
-  const MIN_MS = 2200; // mínimo visible para apreciar el logo
+  const MIN_MS = 2800; // ajustá a gusto
   const start = performance.now();
 
-  // Pre-cargar imagen del splash para evitar “media imagen”
-  const img = new Image();
-  img.src = LOGO_SRC;
-  try{
-    await (img.decode ? img.decode() : new Promise((res,rej)=>{ img.onload=res; img.onerror=rej; }));
-  }catch{} // si falla igual seguimos
   splashLogo.src = LOGO_SRC;
+  let decoded = Promise.resolve();
+  if (splashLogo.decode) {
+    decoded = splashLogo.decode().catch(()=>{});
+  } else {
+    decoded = new Promise(res=>{
+      splashLogo.onload = ()=>res();
+      splashLogo.onerror = ()=>res();
+    });
+  }
 
-  // Esperar al menos MIN_MS y a que el documento esté “ready”
-  const remain = Math.max(0, MIN_MS - (performance.now() - start));
   const docReady = (document.readyState === 'complete')
     ? Promise.resolve()
     : new Promise(res=> window.addEventListener('load', res, {once:true}));
-  await Promise.all([wait(remain), docReady]);
 
-  // Fade-out suave y remover
+  const remain = Math.max(0, MIN_MS - (performance.now() - start));
+  await Promise.all([decoded, docReady, wait(remain)]);
+
   splash.classList.add('is-hidden');
   splash.addEventListener('transitionend', ()=> splash.remove(), {once:true});
 }
@@ -875,7 +900,7 @@ async function runSplash(){
   updateFabVisibility();
   makePressable(waFabImg);
   enableCartSwipeClose();
-  runSplash(); // << splash mejorado
+  runSplash();
 })();
 </script>
 </body>
