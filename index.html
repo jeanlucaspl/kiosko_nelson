@@ -22,19 +22,18 @@
     --header-col-offers: 12%;
     --header-col-cart: 12%;
     --logo-header-maxh: calc(var(--header-h) * 0.8);
-    --search-h:          calc(var(--header-h) * 0.7);
+    --search-h:          calc(var(--header-h) * 0.5);
     --icon-btn-size:     calc(var(--header-h) * 0.4);
     --icon-font:         clamp(10px, calc(var(--header-h)*0.16), 12px);
 
     /* Otros */
-    --logo-splash-vmin: 45vmin;
-    --tile-size-vmin: 30vmin;
-    --cart-drawer-w: 25vw;   /* desktop */
+    --logo-splash-vmin: 35vmin;
+    --cart-drawer-w: 30vw;   /* desktop */
     --wa-size-desktop: 12vmin;
     --wa-size-mobile:  16vmin;
     --zoom-press: 1.06;
     --zoom-hover: 1.05;
-    --grid-safe-pad: 24px;   /* colchón para zoom */
+    --grid-safe-pad: 24px;
   }
 
   *{box-sizing:border-box}
@@ -46,13 +45,29 @@
   }
   a{color:inherit; text-decoration:none}
 
-  /* Splash */
-  #splash{position:fixed; inset:0; display:flex; flex-direction:column; gap:18px; align-items:center; justify-content:center; background:var(--green-900); z-index:9999; padding:24px; animation:splashHide 3s ease forwards}
-  #splash img{width:var(--logo-splash-vmin); height:auto; filter:drop-shadow(0 8px 24px rgba(0,0,0,.35))}
-  .loader{position:relative; width:min(320px,70vw); height:6px; border-radius:999px; background:rgba(255,255,255,.12); overflow:hidden}
-  .loader::after{content:""; position:absolute; inset:0; transform:scaleX(0); transform-origin:left; background:linear-gradient(90deg, var(--lime-300), #25D366); animation:fill 3s linear forwards}
+  /* ================= SPLASH mejorado ================= */
+  #splash{
+    position:fixed; inset:0; display:flex; flex-direction:column; gap:18px;
+    align-items:center; justify-content:center; background:var(--green-900);
+    z-index:9999; padding:24px; opacity:1; visibility:visible;
+    transition: opacity .35s ease, visibility .35s ease;
+    will-change: opacity;
+  }
+  #splash.is-hidden{ opacity:0; visibility:hidden; }
+  #splash img{
+    width:min(80vw, var(--logo-splash-vmin));
+    max-width:600px;
+    height:auto;
+    max-height:40vh;
+    object-fit:contain;
+    filter:drop-shadow(0 8px 24px rgba(0,0,0,.35));
+  }
+  .loader{position:relative; width:min(340px,72vw); height:6px; border-radius:999px; background:rgba(255,255,255,.12); overflow:hidden}
+  .loader::after{
+    content:""; position:absolute; inset:0; transform:scaleX(0); transform-origin:left;
+    background:linear-gradient(90deg, var(--lime-300), #25D366); animation:fill 2.4s ease forwards
+  }
   @keyframes fill{to{transform:scaleX(1)}}
-  @keyframes splashHide{0%{opacity:1;visibility:visible}90%{opacity:1}100%{opacity:0;visibility:hidden}}
 
   /* Header */
   header{position:sticky; top:0; z-index:10; background:var(--green-800); box-shadow:0 4px 20px rgba(0,0,0,.25); border-bottom:1px solid rgba(255,255,255,.08)}
@@ -102,7 +117,7 @@
     .iconBlock{align-items:center; justify-content:center;}
     .iconBtn{width: calc(var(--header-h) * 0.55); height: calc(var(--header-h) * 0.55)}
     .iconLabel{font-size: clamp(10px, calc(var(--header-h)*0.20), 12px)}
-    :root{ --cart-drawer-w: 80vw; }  /* carrito más ancho en móvil */
+    :root{ --cart-drawer-w: 80vw; }
   }
 
   /* View & pages */
@@ -119,7 +134,7 @@
   }
   .tile{
     position:relative; background:var(--card); border:1px solid rgba(255,255,255,.12);
-    border-radius:20px; height:var(--tile-size-vmin); overflow:visible;
+    border-radius:20px; height:30vmin; overflow:visible;
     color:var(--text-on-green); display:flex; align-items:flex-end;
     transition:transform .15s ease, border-color .15s ease, box-shadow .15s ease, z-index .15s ease;
     box-shadow:var(--shadow-base); will-change:transform;
@@ -154,9 +169,9 @@
   .drawerOverlay.show{opacity:1; pointer-events:auto}
   .drawer{
     position:fixed; top:0; right:0; width:var(--cart-drawer-w);
-    height:100dvh; /* clave en móviles */
-    background:var(--green-800); box-shadow:-8px 0 24px rgba(0,0,0,.45);
-    transform:translateX(100%); transition:transform .3s ease; z-index:41; display:flex; flex-direction:column
+    height:100dvh; background:var(--green-800); box-shadow:-8px 0 24px rgba(0,0,0,.45);
+    transform:translateX(100%); transition:transform .28s ease; z-index:41; display:flex; flex-direction:column;
+    touch-action: pan-y; /* permití scroll vertical, nosotros manejamos horizontal */
   }
   .drawer.open{transform:translateX(0)}
   .drawer header{display:flex; align-items:center; justify-content:space-between; padding:14px 16px; border-bottom:1px solid rgba(255,255,255,.12); background:transparent; box-shadow:none}
@@ -178,7 +193,16 @@
     border-top:1px solid rgba(255,255,255,.12);
   }
   .cartFooter{display:flex; gap:10px; margin-top:8px; flex-wrap:nowrap}
-  .btnWA, .btnClear{display:inline-flex; align-items:center; justify-content:center}
+  /* Estilo clásico del botón WA (verde) */
+  .btnWA{
+    display:inline-flex; align-items:center; justify-content:center;
+    padding:12px; border-radius:12px; border:0; cursor:pointer;
+    background:#25D366; color:white; font-weight:800;
+    box-shadow: 0 4px 14px rgba(37,211,102,.35);
+    transition: transform .12s ease, filter .12s ease, box-shadow .12s ease;
+  }
+  .btnWA:hover{ filter:brightness(.98); box-shadow: 0 6px 18px rgba(37,211,102,.45); transform: translateY(-1px); }
+  .btnClear{display:inline-flex; align-items:center; justify-content:center; padding:12px; border-radius:12px; background:transparent; color:var(--text-on-green); border:1px solid rgba(255,255,255,.16); cursor:pointer}
   .drawer[data-count="0"] .btnWA{display:none}
   .drawer[data-scale="xs"] .cartItem{grid-template-columns:44px 1fr auto}
   .drawer[data-scale="xxs"] .cartItem{grid-template-columns:36px 1fr auto}
@@ -190,25 +214,16 @@
   /* WhatsApp FAB con zoom + tooltip */
   .wa-fab-img{
     position:fixed; right:16px; bottom:16px; display:block; z-index:60;
-    transition: transform .12s ease; /* por si el selector genérico no aplica en algunos navegadores */
+    transition: transform .12s ease;
   }
   .wa-fab-img.hidden{display:none !important}
   .wa-fab-img img{width:var(--wa-size-desktop); height:auto}
-  /* Tooltip */
   .wa-fab-img::after{
     content:"Contactenos";
-    position:absolute;
-    right: calc(100% + 10px);
-    bottom: 8px;
-    background: rgba(0,0,0,.8);
-    color: #fff;
-    font-weight:700;
-    font-size: 13px;
-    padding: 8px 10px;
-    border-radius: 10px;
-    white-space: nowrap;
-    opacity:0; transform: translateY(6px);
-    pointer-events:none;
+    position:absolute; right: calc(100% + 10px); bottom: 8px;
+    background: rgba(0,0,0,.8); color: #fff; font-weight:700; font-size: 13px;
+    padding: 8px 10px; border-radius: 10px; white-space: nowrap;
+    opacity:0; transform: translateY(6px); pointer-events:none;
     transition: opacity .15s ease, transform .15s ease;
   }
   .wa-fab-img:hover::after,
@@ -216,7 +231,6 @@
   .wa-fab-img.is-pressing::after{
     opacity:1; transform: translateY(0);
   }
-  /* Tamaño en móviles */
   @media (max-width: 680px){
     .wa-fab-img img{ width: var(--wa-size-mobile); }
   }
@@ -231,7 +245,10 @@
 </head>
 <body>
   <!-- Splash -->
-  <div id="splash"><img id="splashLogo" alt="Kiosco" /><div class="loader" aria-hidden="true"></div></div>
+  <div id="splash" aria-hidden="true">
+    <img id="splashLogo" alt="Kiosco" />
+    <div class="loader" aria-hidden="true"></div>
+  </div>
   <noscript><style>#splash{display:none !important}</style></noscript>
 
   <!-- Header -->
@@ -320,11 +337,11 @@ const TILE_BG = {
 /****************************************/
 
 /* Carga de assets */
-headerLogo.src = splashLogo.src = LOGO_SRC;
+headerLogo.src = LOGO_SRC;
 waIcon.src     = WHATSAPP_ICON_SRC;
 cartIcon.src   = CART_ICON_SRC;
 offerIcon.src  = OFFER_ICON_SRC;
-waFabImg.href  = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hola! Quiero hacer un pedido.')}`;
+waFabImg.href  = `https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent('Hola! Quiero hacer una consulta.')}`;
 
 /* Catálogo */
 let CATALOG = null;
@@ -342,7 +359,7 @@ const FALLBACK = [
 async function getCatalog(){
   if (CATALOG) return CATALOG;
   try{
-    const r = await fetch('productos.json?v=2',{cache:'no-store'});
+    const r = await fetch('productos.json?v=3',{cache:'no-store'});
     if(!r.ok) throw 0;
     const data = await r.json();
     if(!Array.isArray(data)) throw 0;
@@ -430,12 +447,12 @@ function goHome(){
 
 /* Swipe back en páginas de catálogo (derecha ←) */
 function attachSwipeBack(page){
-  let sx=0, sy=0, tracking=false, dragging=false;
-  const onDown = (e)=>{ tracking=true; dragging=false; sx=e.clientX; sy=e.clientY; page.style.willChange='transform'; };
-  const onMove = (e)=>{ if(!tracking) return; const dx=e.clientX-sx, dy=Math.abs(e.clientY-sy); if(dx>0 && dy<80){ dragging=true; page.style.transition='none'; page.style.transform=`translateX(${dx}px)`; } };
+  let sx=0, sy=0, tracking=false, dragging=false, pid=null;
+  const onDown = (e)=>{ tracking=true; dragging=false; sx=e.clientX; sy=e.clientY; pid=e.pointerId; page.setPointerCapture?.(pid); page.style.willChange='transform'; };
+  const onMove = (e)=>{ if(!tracking) return; const dx=e.clientX-sx, dy=Math.abs(e.clientY-sy); if(dx>0 && dy<80){ dragging=true; page.style.transition='none'; page.style.transform=`translateX(${dx}px)`; e.preventDefault?.(); } };
   const onUp = (e)=>{
     if(!tracking) return; tracking=false; const dx=e.clientX-sx, dy=Math.abs(e.clientY-sy);
-    page.style.transition='';
+    page.releasePointerCapture?.(pid); page.style.transition='';
     if(dragging && dx>100 && dy<80){
       setScrollTop(homeScrollY);
       page.style.transform='translateX(100%)';
@@ -445,10 +462,10 @@ function attachSwipeBack(page){
     }
     page.style.willChange='';
   };
-  page.addEventListener('pointerdown', onDown, {passive:true});
-  page.addEventListener('pointermove', onMove, {passive:true});
-  page.addEventListener('pointerup',   onUp,   {passive:true});
-  page.addEventListener('pointercancel', onUp, {passive:true});
+  page.addEventListener('pointerdown', onDown, {passive:false});
+  page.addEventListener('pointermove', onMove, {passive:false});
+  page.addEventListener('pointerup',   onUp,   {passive:false});
+  page.addEventListener('pointercancel', onUp, {passive:false});
 }
 
 /* Categorías / Ofertas */
@@ -483,7 +500,7 @@ async function openOffers(){
 }
 async function updateOfferBadge(){ const count = (await getCatalog()).filter(p=> p.categoria==='Ofertas').length; offerBadge.textContent = count; offerBadge.style.display = count>0 ? 'inline-flex' : 'none'; }
 
-/* Logo → inicio (en móvil está oculto) */
+/* Logo → inicio */
 logoHome.addEventListener('click', goHome);
 makePressable(logoHome);
 
@@ -521,9 +538,20 @@ const btnWA    = document.getElementById('btnWA');
 const btnClear = document.getElementById('btnClear');
 const toast    = document.getElementById('toast');
 
+function openCartDrawer(){
+  overlay.classList.add('show');
+  drawer.classList.add('open');
+  updateFabVisibility();
+}
+function closeCartDrawer(){
+  overlay.classList.remove('show');
+  drawer.classList.remove('open');
+  drawer.style.transform = '';
+  updateFabVisibility();
+}
 overlay.addEventListener('click', closeCartDrawer);
 cartClose.addEventListener('click', closeCartDrawer);
-cartBtn.addEventListener('click', ()=>{ overlay.classList.add('show'); drawer.classList.add('open'); updateFabVisibility(); });
+cartBtn.addEventListener('click', openCartDrawer);
 btnClear.addEventListener('click', ()=>{ cart.clear(); renderCart(); });
 
 const cart = new Map(); // id -> {p, qty}
@@ -536,19 +564,21 @@ function addToCart(p, qty){
 }
 
 function attachSwipeDelete(row, id){
-  let sx=0, sy=0, tracking=false, dragging=false;
-  const onDown = e=>{ tracking=true; dragging=false; sx=e.clientX; sy=e.clientY; row.style.willChange='transform'; };
+  let sx=0, sy=0, tracking=false, dragging=false, pid=null;
+  const onDown = e=>{ tracking=true; dragging=false; sx=e.clientX; sy=e.clientY; pid=e.pointerId; row.setPointerCapture?.(pid); row.style.willChange='transform'; };
   const onMove = e=>{
     if(!tracking) return;
     const dx=e.clientX-sx, dy=Math.abs(e.clientY-sy);
     if(dx<0 && dy<80){
       dragging=true;
       row.style.transform=`translateX(${dx}px)`;
-      row.style.opacity = String(Math.max(0.3, 1 + dx/200));
+      row.style.opacity = String(Math.max(0.3, 1 + dx/220));
+      e.preventDefault?.();
     }
   };
   const onUp = e=>{
     if(!tracking) return; tracking=false;
+    row.releasePointerCapture?.(pid);
     const dx=e.clientX-sx, dy=Math.abs(e.clientY-sy);
     if(dragging && dx<-100 && dy<80){
       cart.delete(id);
@@ -558,10 +588,10 @@ function attachSwipeDelete(row, id){
     }
     row.style.willChange='';
   };
-  row.addEventListener('pointerdown', onDown, {passive:true});
-  row.addEventListener('pointermove', onMove, {passive:true});
-  row.addEventListener('pointerup',   onUp,   {passive:true});
-  row.addEventListener('pointercancel', onUp, {passive:true});
+  row.addEventListener('pointerdown', onDown, {passive:false});
+  row.addEventListener('pointermove', onMove, {passive:false});
+  row.addEventListener('pointerup',   onUp,   {passive:false});
+  row.addEventListener('pointercancel', onUp, {passive:false});
 }
 
 function renderCart(){
@@ -608,43 +638,45 @@ cartList.addEventListener('click',(e)=>{
 
 btnWA.addEventListener('click',()=>{
   if(cart.size===0) return;
-  let lines=['🧾 *Pedido Kiosco*']; let total=0;
+  let lines=['🧾 *Pedido Kiosco Nelson*']; let total=0;
   cart.forEach(({p,qty})=>{ const line=p.precio*qty; total+=line; lines.push(`• ${qty} x ${p.nombre} (${p.marca}) — $ ${fmt(p.precio)} = $ ${fmt(line)}`); });
   lines.push('—'.repeat(24), `*TOTAL:* $ ${fmt(total)}`);
   window.open(`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(lines.join('\n'))}`,'_blank');
 });
 
 /* ===== Cierre del carrito por arrastre (izq → der) ===== */
-function closeCartDrawer(){
-  overlay.classList.remove('show');
-  drawer.classList.remove('open');
-  drawer.style.transform = '';
-  updateFabVisibility();
-}
 function enableCartSwipeClose(){
-  let startX=0, startY=0, dragging=false;
+  let startX=0, startY=0, dragging=false, pid=null;
+
   const onDown = (e)=>{
     if(!drawer.classList.contains('open')) return;
     dragging = true;
     startX = e.clientX;
     startY = e.clientY;
+    pid = e.pointerId;
+    drawer.setPointerCapture?.(pid);
     drawer.style.willChange = 'transform';
     overlay.style.transition = 'none';
   };
+
   const onMove = (e)=>{
     if(!dragging) return;
     const dx = e.clientX - startX;
     const dy = Math.abs(e.clientY - startY);
+    // arrastre a la derecha, gesto predominantemente horizontal
     if (dx > 0 && dy < 80){
       drawer.style.transform = `translateX(${dx}px)`;
       const max = Math.min(window.innerWidth * 0.6, 400);
       const alpha = Math.max(0, 1 - dx / max);
       overlay.style.opacity = String(alpha);
+      e.preventDefault?.(); // evita scroll durante el gesto
     }
   };
+
   const onUp = (e)=>{
     if(!dragging) return;
     dragging = false;
+    drawer.releasePointerCapture?.(pid);
     drawer.style.willChange = '';
     overlay.style.transition = '';
 
@@ -658,10 +690,11 @@ function enableCartSwipeClose(){
       overlay.style.opacity = '';
     }
   };
-  drawer.addEventListener('pointerdown', onDown, {passive:true});
-  drawer.addEventListener('pointermove', onMove, {passive:true});
-  drawer.addEventListener('pointerup',   onUp,   {passive:true});
-  drawer.addEventListener('pointercancel', onUp, {passive:true});
+
+  drawer.addEventListener('pointerdown', onDown, {passive:false});
+  drawer.addEventListener('pointermove', onMove, {passive:false});
+  drawer.addEventListener('pointerup',   onUp,   {passive:false});
+  drawer.addEventListener('pointercancel', onUp, {passive:false});
 }
 
 /* ===== Sugerencias ===== */
@@ -670,13 +703,13 @@ const suggest  = document.getElementById('suggest');
 let suggestItems = []; let suggestIndex = -1; let SUGGEST_POOL = null;
 
 const CATEGORY_ALIASES = [
-  {cats:['Alcohol'],      terms:['alcohol','alcoh','alc']},
-  {cats:['Cigarrillos'],  terms:['cigarrillos','cigarros','cigarr','cig']},
-  {cats:['Bebidas'],      terms:['bebidas','bebid','beb']},
-  {cats:['Comida'],       terms:['comida','comid','com']},
-  {cats:['Almacen'],      terms:['almacen','almacén','alm']},
-  {cats:['Snacks'],       terms:['snacks','snack','sna']},
-  {cats:['Dulces'],       terms:['dulces','dulce','dulc']},
+  {cats:['Alcohol'],      terms:['alcohol','alcoh']},
+  {cats:['Cigarrillos'],  terms:['cigarrillos','cigarros','cigarr']},
+  {cats:['Bebidas'],      terms:['bebidas','bebid']},
+  {cats:['Comida'],       terms:['comida','comid']},
+  {cats:['Almacen'],      terms:['almacen','almacén']},
+  {cats:['Snacks'],       terms:['snacks','snack']},
+  {cats:['Dulces'],       terms:['dulces','dulce']},
   {cats:['Snacks','Dulces'], terms:['snacks y dulces','snacks dulces','snacks y','dulces y']},
   {cats:['Alcohol','Cigarrillos'], terms:['alcohol y cigarr','alcohol y cigarros','alcohol y cigarrillos']}
 ];
@@ -809,15 +842,40 @@ function makePressable(el){
   el.addEventListener('pointerleave', clear, {passive:true});
 }
 
+/* ================= SPLASH controller ================= */
+function wait(ms){ return new Promise(r=>setTimeout(r, ms)); }
+async function runSplash(){
+  const MIN_MS = 2200; // mínimo visible para apreciar el logo
+  const start = performance.now();
+
+  // Pre-cargar imagen del splash para evitar “media imagen”
+  const img = new Image();
+  img.src = LOGO_SRC;
+  try{
+    await (img.decode ? img.decode() : new Promise((res,rej)=>{ img.onload=res; img.onerror=rej; }));
+  }catch{} // si falla igual seguimos
+  splashLogo.src = LOGO_SRC;
+
+  // Esperar al menos MIN_MS y a que el documento esté “ready”
+  const remain = Math.max(0, MIN_MS - (performance.now() - start));
+  const docReady = (document.readyState === 'complete')
+    ? Promise.resolve()
+    : new Promise(res=> window.addEventListener('load', res, {once:true}));
+  await Promise.all([wait(remain), docReady]);
+
+  // Fade-out suave y remover
+  splash.classList.add('is-hidden');
+  splash.addEventListener('transitionend', ()=> splash.remove(), {once:true});
+}
+
 /* Boot */
 (function boot(){
-  const s=document.getElementById('splash');
-  if(s){ s.addEventListener('animationend', ()=> s.remove(), {once:true}); }
-  getCatalog();           // precarga + badge ofertas
-  updateOfferBadge();     // inicializar badge
-  updateFabVisibility();  // estado inicial
-  makePressable(waFabImg); // zoom-in + tooltip al presionar en móvil
-  enableCartSwipeClose();  // gesto para cerrar carrito
+  getCatalog();
+  updateOfferBadge();
+  updateFabVisibility();
+  makePressable(waFabImg);
+  enableCartSwipeClose();
+  runSplash(); // << splash mejorado
 })();
 </script>
 </body>
