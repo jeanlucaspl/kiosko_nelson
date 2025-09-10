@@ -670,7 +670,7 @@ btnWA.addEventListener('click',()=>{
 
 /* ===== Cierre del carrito por arrastre (zonas seguras) ===== */
 function enableCartSwipeClose(){
-  let startX=0, startY=0, dragging=false, pid=null;
+  let startX=0, startY=0, dragging=false, captured=false, pid=null;
 
   function canStartDrawerSwipe(e){
     if(!drawer.classList.contains('open')) return false;
@@ -686,7 +686,7 @@ function enableCartSwipeClose(){
     if (t.closest('.cartItem')) return false;
 
     // Zonas válidas: header, total, huecos de la lista, o cualquier otra parte libre
-    if (t.closest('.drawer > header')) return false;
+    if (t.closest('.drawer > header')) return true;
     if (t.closest('.cartTotal')) return true;
     if (t.closest('.cartList')) return true;
 
@@ -696,38 +696,43 @@ function enableCartSwipeClose(){
   const onDown = (e)=>{
     if(!canStartDrawerSwipe(e)) return;
     dragging = true;
+    captured = false;            
     startX = e.clientX;
     startY = e.clientY;
-    pid = e.pointerId;
-    drawer.setPointerCapture?.(pid);
-    drawer.style.willChange = 'transform';
-    overlay.style.transition = 'none';
   };
 
   const onMove = (e)=>{
     if(!dragging) return;
     const dx = e.clientX - startX;
     const dy = Math.abs(e.clientY - startY);
-    if (dx > 0 && dy < 80){
-      drawer.style.transform = `translateX(${dx}px)`;
-      const max = Math.min(window.innerWidth * 0.6, 400);
-      const alpha = Math.max(0, 1 - dx / max);
-      overlay.style.opacity = String(alpha);
-      e.preventDefault?.();
-    }
+    if (!captured && dx > 10 && dy < 80){
+    pid = e.pointerId;
+    drawer.setPointerCapture?.(pid);  
+    drawer.style.willChange = 'transform';
+    overlay.style.transition = 'none';
+    captured = true;
+   }
+
+    if (captured && dx > 0 && dy < 80){
+    drawer.style.transform = `translateX(${dx}px)`;
+    const max = Math.min(window.innerWidth * 0.6, 400);
+    overlay.style.opacity = String(Math.max(0, 1 - dx / max));
+    e.preventDefault?.();
+   }
   };
 
   const onUp = (e)=>{
     if(!dragging) return;
     dragging = false;
-    drawer.releasePointerCapture?.(pid);
-    drawer.style.willChange = '';
-    overlay.style.transition = '';
-
+    if (captured){
+     drawer.releasePointerCapture?.(pid);
+     drawer.style.willChange = '';
+     overlay.style.transition = '';
+    }
     const dx = e.clientX - startX;
     const dy = Math.abs(e.clientY - startY);
     if (dx > 100 && dy < 80){
-      closeCartDrawer(true); // cerramos sin hacer history.back() otra vez
+      closeCartDrawer(true);
       overlay.style.opacity = '';
     }else{
       drawer.style.transform = '';
