@@ -342,7 +342,7 @@ header{
 .prod-unit{ font-size:10px; color:var(--txt-3); font-weight:500; }
 
 .qtyRow{
-  display:flex; align-items:center; justify-content:space-between;
+  display:flex; flex-direction:column;
   padding:10px 12px 14px; gap:8px; margin-top:auto;
 }
 .qtyCtrl{ display:flex; align-items:center; gap:8px; }
@@ -363,7 +363,7 @@ header{
 }
 
 .btnPrimary{
-  flex:1;
+  width:100%;
   display:inline-flex; align-items:center; justify-content:center; gap:6px;
   padding:10px 12px; border-radius:12px;
   background:var(--amber); color:#000;
