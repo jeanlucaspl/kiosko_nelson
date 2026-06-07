@@ -204,6 +204,41 @@ header{
 @media(max-width:920px){ .homeGrid{ grid-template-columns:repeat(2,1fr); } }
 @media(max-width:520px){ .homeGrid{ grid-template-columns:1fr; gap:10px; padding:14px 12px 80px; } }
 
+/* ── ONBOARDING BANNER ── */
+#onboarding{
+  margin:16px 16px 0;
+  background:linear-gradient(135deg,#1e1a10,#2a2210);
+  border:1px solid rgba(245,158,11,.25);
+  border-radius:18px;
+  padding:16px 18px;
+  display:flex; align-items:flex-start; gap:14px;
+  animation: fadeSlideIn .4s cubic-bezier(.22,.61,.36,1) both;
+}
+#onboarding.hidden{ display:none; }
+@keyframes fadeSlideIn{ from{opacity:0;transform:translateY(-10px)} to{opacity:1;transform:translateY(0)} }
+
+.ob-icon{ font-size:28px; line-height:1; flex-shrink:0; margin-top:2px; }
+.ob-body{ flex:1; min-width:0; }
+.ob-title{ font-size:14px; font-weight:800; color:var(--amber); margin-bottom:8px; }
+.ob-steps{ display:flex; flex-direction:column; gap:5px; }
+.ob-step{ display:flex; align-items:center; gap:8px; font-size:13px; color:var(--txt-2); }
+.ob-num{
+  width:20px; height:20px; flex-shrink:0;
+  background:var(--amber-dim); border:1px solid rgba(245,158,11,.3);
+  border-radius:99px; color:var(--amber);
+  font-size:10px; font-weight:800;
+  display:flex; align-items:center; justify-content:center;
+}
+.ob-close{
+  flex-shrink:0; width:28px; height:28px;
+  display:flex; align-items:center; justify-content:center;
+  border-radius:8px; color:var(--txt-3);
+  font-size:18px; line-height:1;
+  transition:background .15s, color .15s;
+  margin-top:-2px;
+}
+.ob-close:hover{ background:var(--card-2); color:var(--txt); }
+
 /* Category tile */
 .tile{
   position:relative;
@@ -640,6 +675,18 @@ header{
 <main class="wrap">
   <div id="view">
     <div id="home" class="page active" style="position:relative;transform:none;opacity:1;">
+      <div id="onboarding">
+        <span class="ob-icon">💡</span>
+        <div class="ob-body">
+          <div class="ob-title">¿Cómo hacer tu pedido?</div>
+          <div class="ob-steps">
+            <div class="ob-step"><span class="ob-num">1</span> Elegí una categoría y agregá productos al carrito</div>
+            <div class="ob-step"><span class="ob-num">2</span> Revisá tu pedido tocando el ícono del carrito</div>
+            <div class="ob-step"><span class="ob-num">3</span> Envianos la lista por WhatsApp con un solo toque</div>
+          </div>
+        </div>
+        <button class="ob-close" id="obClose" aria-label="Cerrar">×</button>
+      </div>
       <div class="homeGrid" id="homeGrid"></div>
     </div>
   </div>
@@ -698,7 +745,7 @@ header{
 <script>
 /* ══════════ CONFIG ══════════ */
 const LOGO_SRC          = 'logo.png';
-const WHATSAPP_NUMBER   = '5491151317667';
+const WHATSAPP_NUMBER   = '5491151177197';
 
 const TILE_BG = {
   alcohol_cigarros: 'img/alcohol_cigarros.png',
@@ -1188,6 +1235,16 @@ async function runSplash(){
   splash.classList.add('is-hidden');
   splash.addEventListener('transitionend',()=>splash.remove(),{once:true});
 }
+
+/* ══════════ ONBOARDING ══════════ */
+(function initOnboarding(){
+  const ob = document.getElementById('onboarding');
+  if(localStorage.getItem('ob_dismissed')) { ob.classList.add('hidden'); return; }
+  document.getElementById('obClose').addEventListener('click', () => {
+    ob.classList.add('hidden');
+    localStorage.setItem('ob_dismissed','1');
+  });
+})();
 
 /* ══════════ BOOT ══════════ */
 (function boot(){
